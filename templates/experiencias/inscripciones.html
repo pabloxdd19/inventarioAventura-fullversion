@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block titulo %}Reservas{% endblock %}
+{% block contenido %}
+<div class="alert alert-warning h3 text-center">RESERVAS E INSCRIPCIONES</div>
+<div class="mb-3">
+    <a href="{% url 'home' %}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> VOLVER</a>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered tabla-datos" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Turista</th>
+                        <th>Experiencia</th>
+                        <th>Precio</th>
+                        <th>Fecha Inscripción</th>
+                        <th>Estado de Pago</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in inscripciones %}
+                    <tr>
+                        <td>{{ i.id }}</td>
+                        <td>{{ i.usuario.username }}</td>
+                        <td>{{ i.experiencia.titulo }}</td>
+                        <td>${{ i.experiencia.precio }}</td>
+                        <td>{{ i.fecha_inscripcion }}</td>
+                        <td>
+                            {% if i.estado_pago == 'confirmado' %}
+                                <span class="badge badge-success">Confirmado</span>
+                            {% else %}
+                                <span class="badge badge-warning">Pendiente</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if i.estado_pago == 'pendiente' and user.rol != 'guia' %}
+                                <a href="{% url 'cambiar_estado_pago' i.id %}" class="btn btn-success btn-sm">
+                                    <i class="fas fa-dollar-sign"></i> Confirmar Pago
+                                </a>
+                            {% endif %}
+                            {% if user.rol == 'admin' or user.rol == 'turista' %}
+                                <a href="{% url 'eliminar_inscripcion' i.id %}" class="btn btn-danger btn-sm">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

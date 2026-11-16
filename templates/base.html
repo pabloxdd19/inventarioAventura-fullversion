@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block titulo %}Aventuras del Sur{% endblock %}</title>
+
+    <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,800,900" rel="stylesheet">
+    <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
+    <!-- DataTables CSS -->
+    <link href="{% static 'vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+    <div class="container py-4">
+
+        {% if user.is_authenticated %}
+        <nav class="navbar navbar-light bg-white shadow-sm rounded mb-4 px-3 py-2 d-flex justify-content-between align-items-center">
+            <div>
+                <span class="text-secondary">Hola, <strong>{{ user.username }}</strong></span>
+                <span class="badge badge-primary ml-2">Rol: {{ user.get_rol_display }}</span>
+            </div>
+            <div>
+                <a href="{% url 'home' %}" class="btn btn-outline-primary btn-sm mr-2">Inicio</a>
+                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#logoutModal">
+                    Log Out
+                </button>
+            </div>
+        </nav>
+        {% endif %}
+
+        {% block contenido %}
+        {% endblock %}
+
+    </div>
+
+    <!-- Modal cerrar sesión -->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">¿Cerrar Sesión?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ¿Estás seguro de que deseas cerrar tu sesión actual?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                    <form action="{% url 'logout' %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Log Out</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts SB Admin 2 y DataTables -->
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+    <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
+    <script src="{% static 'vendor/datatables/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+    <script>
+        $(document).ready(function() {
+            $('.tabla-datos').DataTable();
+        });
+    </script>
+</body>
+</html>

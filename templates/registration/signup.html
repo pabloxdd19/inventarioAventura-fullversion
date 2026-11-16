@@ -1,0 +1,86 @@
+{% extends "base_login.html" %}
+
+{% block titulo %} SIGNUP - Aventuras del Sur {% endblock %}
+
+{% block contenido %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="p-5">
+            <div class="text-center">
+                <h1 class="h4 text-gray-900 mb-4">¡Crear cuenta en Ecoparque Aventuras del Sur!</h1>
+            </div>
+
+            {% if form.errors %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <ul>
+                {% for field in form %}
+                    {% for error in field.errors %}
+                    <li><strong>{{ field.label }}: </strong> {{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+                </ul>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endif %}
+
+            <form class="user" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input type="text" class="form-control form-control-user" name="username"
+                        placeholder="Nombre de usuario (username)..." required>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                        <input type="text" class="form-control form-control-user" name="first_name"
+                            placeholder="Nombre (first_name)..." required>
+                    </div>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control form-control-user" name="last_name"
+                            placeholder="Apellido (last_name)..." required>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                        <input type="email" class="form-control form-control-user" name="email"
+                            placeholder="Correo electrónico..." required>
+                    </div>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control form-control-user" name="telefono"
+                            placeholder="Teléfono...">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="small text-gray-700 ml-2">Selecciona el Rol del Usuario:</label>
+                    <select name="rol" class="form-control" required>
+                        <option value="turista">Turista / Cliente</option>
+                        <option value="guia">Guía / Operador</option>
+                        <option value="admin">Administrador</option>
+                    </select>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                        <input type="password" class="form-control form-control-user" name="password1"
+                            placeholder="Contraseña..." required>
+                    </div>
+                    <div class="col-sm-6">
+                        <input type="password" class="form-control form-control-user" name="password2"
+                            placeholder="Repetir contraseña..." required>
+                    </div>
+                </div>
+                <button class="btn btn-primary btn-user btn-block" type="submit">
+                    Registrar cuenta
+                </button>
+            </form>
+            <hr>
+            <div class="text-center">
+                <a class="small" href="{% url 'login' %}">¿Ya tienes cuenta? ¡Inicia sesión!</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

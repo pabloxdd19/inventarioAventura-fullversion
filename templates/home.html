@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block titulo %} Inicio {% endblock %}
+
+{% block contenido %}
+
+{% if user.is_authenticated %}
+    
+    <div class="alert alert-info display-4 text-center">
+        ECOPARQUE AVENTURAS DEL SUR
+    </div>
+
+    <div class="alert alert-primary text-center">
+        Panel de <strong>{{ user.get_rol_display }}</strong>
+        {% if user.rol == 'admin' %}(Acceso Total CRUD){% endif %}
+    </div>
+
+    <div class="text-center my-4">
+        {% if user.rol == 'admin' %}
+            <a href="{% url 'lista_usuarios' %}" class="btn btn-info m-1">
+                <i class="fas fa-users"></i> GESTIONAR USUARIOS
+            </a>
+            <a href="{% url 'lista_categorias' %}" class="btn btn-info m-1">
+                <i class="fas fa-tags"></i> GESTIONAR CATEGORÍAS
+            </a>
+        {% endif %}
+
+        <a href="{% url 'lista_experiencias' %}" class="btn btn-info m-1">
+            <i class="fas fa-hiking"></i> 
+            {% if user.rol == 'turista' %}VER EXPERIENCIAS{% else %}GESTIONAR EXPERIENCIAS{% endif %}
+        </a>
+
+        <a href="{% url 'lista_inscripciones' %}" class="btn btn-info m-1">
+            <i class="fas fa-clipboard-list"></i> 
+            {% if user.rol == 'turista' %}MIS RESERVAS{% else %}GESTIONAR RESERVAS{% endif %}
+        </a>
+
+        {% if user.rol == 'admin' %}
+            <a href="/admin/" class="btn btn-secondary m-1">
+                <i class="fas fa-cog"></i> ADMIN DJANGO
+            </a>
+        {% endif %}
+    </div>
+
+    
+    <div class="row text-center mt-4">
+        <div class="col-md-4">
+            <div class="alert alert-success py-4">
+                <h4>Usuarios</h4>
+                <div class="display-4">{{ total_usuarios }}</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="alert alert-warning py-4">
+                <h4>Experiencias</h4>
+                <div class="display-4">{{ total_experiencias }}</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="alert alert-info py-4">
+                <h4>Reservas</h4>
+                <div class="display-4">{{ total_reservas }}</div>
+            </div>
+        </div>
+    </div>
+
+{% else %}
+    
+    <div class="row justify-content-center mt-5">
+        <div class="col-lg-6">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Ecoparque Aventuras del Sur</h6>
+                </div>
+                <div class="card-body text-center py-5">
+                    <h3 class="mb-4 text-gray-800">No estás logeado</h3>
+                    <a href="{% url 'login' %}" class="btn btn-primary m-1">Iniciar Sesión (Login)</a>
+                    <a href="{% url 'signup' %}" class="btn btn-info m-1">Crear Cuenta (Sign Up)</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    {% if experiencias_publicas %}
+    <div class="mt-4">
+        <h5 class="text-center text-primary font-weight-bold mb-3">Catálogo de Experiencias Disponibles</h5>
+        <div class="row">
+            {% for e in experiencias_publicas %}
+            <div class="col-md-4 mb-3">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <span class="badge badge-info mb-2">{{ e.categoria.nombre }}</span>
+                        <h5 class="card-title text-gray-900 font-weight-bold">{{ e.titulo }}</h5>
+                        <p class="card-text text-muted small">{{ e.descripcion }}</p>
+                        <p class="mb-0 font-weight-bold text-primary">Precio: ${{ e.precio }} | Cupos: {{ e.cupo_maximo }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block titulo %}Categorías{% endblock %}
+{% block contenido %}
+<div class="alert alert-info h3 text-center">GESTIÓN DE CATEGORÍAS</div>
+<div class="mb-3">
+    <a href="{% url 'crear_categoria' %}" class="btn btn-info"><i class="fas fa-plus"></i> AGREGAR CATEGORÍA</a>
+    <a href="{% url 'home' %}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> VOLVER</a>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered tabla-datos" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for c in categorias %}
+                    <tr>
+                        <td>{{ c.id }}</td>
+                        <td>{{ c.nombre }}</td>
+                        <td>{{ c.descripcion }}</td>
+                        <td>
+                            {% if c.estado == 'activo' %}
+                                <span class="badge badge-success">Activo</span>
+                            {% else %}
+                                <span class="badge badge-danger">Inactivo</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'editar_categoria' c.id %}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
+                            <a href="{% url 'eliminar_categoria' c.id %}" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

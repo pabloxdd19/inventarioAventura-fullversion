@@ -1,0 +1,20 @@
+CREDENCIALES 
+
+1. CONEXIÓN BASE DE DATOS MYSQL 
+- Base de datos: aventura_db
+- Usuario MySQL: admin
+- Contraseña MySQL: mi_clave_123
+- Host / Puerto: localhost / 3306
+- Archivo de respaldo: aventura_db.sql
+
+2. USUARIOS DEL SISTEMA WEB (http://127.0.0.1:8000/)
+- Administrador:
+  Usuario: admin  Clave: 123456
+
+- Guías / Operadores (4 experiencias registradas cada uno):
+  Usuario: guia1  Clave: Grobert2026
+  Usuario: guia2  Clave: Gcarlo2026
+
+- Turistas / Clientes (3 reservas realizadas cada uno):
+  Usuario: turista1  Clave: Tjuan2026
+  Usuario: turista2  Clave: Tdiego2026

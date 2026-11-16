@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% load static %}
+{% block titulo %}Usuarios{% endblock %}
+
+{% block estilos %}
+<link href="{% static 'vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block contenido %}
+<div class="alert alert-primary h3 text-center">GESTIÓN DE USUARIOS</div>
+<div class="mb-3">
+    <a href="{% url 'crear_usuario' %}" class="btn btn-primary"><i class="fas fa-plus"></i> AGREGAR USUARIO</a>
+    <a href="{% url 'home' %}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> VOLVER</a>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table id="tablaUsuarios" class="table table-bordered tabla-datos" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Usuario</th>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th>Teléfono</th>
+                        <th>Rol</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for u in usuarios %}
+                    <tr>
+                        <td>{{ u.id }}</td>
+                        <td>{{ u.username }}</td>
+                        <td>{{ u.first_name }} {{ u.last_name }}</td>
+                        <td>{{ u.email }}</td>
+                        <td>{{ u.telefono|default:"-" }}</td>
+                        <td><span class="badge badge-info">{{ u.get_rol_display }}</span></td>
+                        <td>
+                            <a href="{% url 'editar_usuario' u.id %}" class="btn btn-warning btn-sm" title="Editar"><i class="fas fa-edit"></i></a>
+                            <a href="{% url 'eliminar_usuario' u.id %}" class="btn btn-danger btn-sm" title="Eliminar"
+                               onclick="return confirm('¿Seguro que quieres eliminar a {{ u.username|escapejs }}?');"><i class="fas fa-trash"></i></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'vendor/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+<script>
+$(document).ready(function () {
+    $('#tablaUsuarios').DataTable({
+        pageLength: 10,
+        lengthMenu: [5, 10, 25, 50],
+        order: [[0, 'asc']],
+        columnDefs: [
+            { orderable: false, searchable: false, targets: -1 }  // columna Acciones
+        ],
+        language: {
+            search: 'Buscar:',
+            lengthMenu: 'Mostrar _MENU_ registros',
+            info: 'Mostrando _START_ a _END_ de _TOTAL_ usuarios',
+            infoEmpty: 'No hay usuarios para mostrar',
+            infoFiltered: '(filtrado de _MAX_ en total)',
+            zeroRecords: 'No se encontraron resultados',
+            emptyTable: 'No hay usuarios registrados',
+            paginate: { first: 'Primero', last: 'Último', next: 'Siguiente', previous: 'Anterior' }
+        }
+    });
+});
+</script>
+{% endblock %}
